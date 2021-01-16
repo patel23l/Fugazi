@@ -1,6 +1,7 @@
 import React from 'react';
 import JSONDATA from './MOCK_DATA.json';
 import {useState} from 'react';
+import './dash.css'
 
 function Dashboard() {
 
@@ -8,7 +9,7 @@ function Dashboard() {
 
   return (
     <div className="dash"> 
-      <input type="text" placeholder="Search..." 
+      <input type="text" placeholder="Search..."  
       onChange={event => {
         setSearchTerm(event.target.value)}}></input>
       {JSONDATA.filter((val) => {
@@ -19,7 +20,7 @@ function Dashboard() {
           return val;
         }
       }).map((val, key) => {
-        return <div className = "user" key={key}> <p>{val.first_name}</p>
+        return <div className="user" key={key}> <p>{val.first_name}</p>
           </div>
       })}
     </div>
