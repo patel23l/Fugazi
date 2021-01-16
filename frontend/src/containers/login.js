@@ -1,6 +1,6 @@
 import React, {usestate} from "react;"
 import Form from "react-bootstrap/Form";
-import Butto from "react-bootstrap-Button";
+import Button from "react-bootstrap-Button";
 import "./login.css"
 
 export default function Login() {
