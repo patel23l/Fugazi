@@ -17,8 +17,8 @@ class App extends Component {
         <Navigation />
           <Switch>
            <Route path="/" component={Login} exact/>
-           <Route path="/dashboard" component={Dashboard}/>
-           <Route path="/upload" component={Upload}/>
+           <Route path="/Dashboard" component={Dashboard}/>
+           <Route path="/Upload" component={Upload}/>
            <Route component={Error}/>
          </Switch>
       </div> 
