@@ -7,10 +7,9 @@ import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container"
 
-import { NavLink } from 'react-router-dom';
 import logo from './fugazi_logo.png';
 
-const Navigation = () => {
+const Navigation = props => {
     return (
        <Container>
         <Navbar bg="light" expand="lg">
@@ -33,6 +32,7 @@ const Navigation = () => {
             <FormControl type="text" placeholder="Search" className="mr-sm-2" />
             <Button variant="outline-success">Search</Button>
             </Form>
+            <h2>Status: {props.loggedInStatus}</h2> 
         </Navbar.Collapse>
         </Navbar>`
 

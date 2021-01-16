@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button"
 import axios from "axios";
 
 export default class Signup extends Component {
@@ -36,7 +38,7 @@ export default class Signup extends Component {
             },
             { withCredentials: true }
         )
-        ,then(response => {
+        .then(response => {
             if(response.data.status === 'created'){
                 this.props.handleSuccessfulAuth(response.data);
             }

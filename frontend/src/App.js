@@ -1,14 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {Component} from 'react';
-import logo from './pages/fugazi_logo.png';
 import './App.css';
-import { BrowserRouter, Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Upload from "./pages/Upload";
 import Navigation from "./pages/Navigation"
 import axios from 'axios';
+import Signup from './pages/Signup';
 
 
 class App extends Component {
@@ -42,13 +42,14 @@ class App extends Component {
         <Navigation/>
           <Switch>
            <Route path="/login" component={Login} exact/>
+           <Route path="/singup" component={Signup} exact/>
            <Route path="/dashboard" component={Dashboard}/>
            <Route path="/upload" component={Upload}/>
            <Route component={Error}/>
          </Switch>
          <h1>Fugazi</h1>
          <h1>Status: {this.props.loggedInStatus}</h1>
-         <Registration handleSuccessfulAuth={this.handleSuccessfulAuth} />
+         <Signup handleSuccessfulAuth={this.handleSuccessfulAuth} />
          <Login handleSuccessfulAuth={this.handleSuccessfulAuth} />
       </div> 
     </BrowserRouter>
