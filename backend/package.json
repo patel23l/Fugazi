@@ -1,0 +1,11 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "fslkadfkj",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo 'yo'"
+  },
+  "author": "",
+  "license": "ISC"
+}
