@@ -1,7 +1,6 @@
 const express = require('express')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
-// const mongoose = require('mongoose')
 
 const router = express.Router()
 
@@ -15,7 +14,6 @@ router.post('/signup', async (req, res, next) => {
     }
 
     const body = {
-      _id: user._id,
       email: user.email,
       displayName: user.name
     }

@@ -1,6 +1,7 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
-const UserModel = require('./data_models/user')
+const client = require('./db')
+const bcrypt = require('bcrypt')
 
 // Create a passport middleware to handle user registration
 passport.use('signup', new LocalStrategy({
@@ -9,36 +10,44 @@ passport.use('signup', new LocalStrategy({
   passReqToCallback: true
 }, async (req, email, password, done) => {
   try {
-    const userExists = await UserModel.findOne({ email }).exec()
-    if (userExists) {
+    let userRow = await client.query("SELECT email FROM userSchema WHERE email=$1::text;", [email]);
+    console.log(userRow.rows);
+    if (userRow.rowCount == 1) {
       return done(null, false, { message: 'User already exists', code: 409 })
     }
 
-    const user = await UserModel.create({ email, password, name: req.body.name }) // TODO(vidursatija): add email support
+    const newPassword = await bcrypt.hash(password, 10);
+    userRow = await client.query("INSERT INTO userSchema (email, password, name) VALUES ($1::text, $2::text, $3::text);", [email, newPassword, req.body.name]);
     // Send the user information to the next middleware
-    return done(null, user)
+    const user = {
+      email,
+      "name": req.body.name
+    }
+    return done(null, user);
   } catch (error) {
+    console.log(error);
     return done(error, false, { message: error, code: 500 })
   }
 }))
 
-// Create a passport middleware to handle User login
+// // Create a passport middleware to handle User login
 passport.use('login', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password'
 }, async (email, password, done) => {
   try {
-    const user = await UserModel.findOne({ email }).exec()
-    if (!user) {
+    let userRow = await client.query("SELECT * FROM userSchema WHERE email=$1::text;", [email]);
+    console.log(userRow.rows);
+    if (userRow.rowCount == 0) {
       return done(null, false, { message: 'User not found', code: 401 })
     }
 
-    const validate = await user.isValidPassword(password)
+    const validate = await bcrypt.compare(password, userRow.rows[0].password)
     if (!validate) {
       return done(null, false, { message: 'Wrong Password', code: 401 })
     }
 
-    return done(null, user, { message: 'Logged in Successfully', code: 200 })
+    return done(null, userRow.rows[0], { message: 'Logged in Successfully', code: 200 })
   } catch (error) {
     return done(error, false, { message: error, code: 500 })
   }
@@ -62,11 +71,6 @@ passport.use(new JWTstrategy({
   passReqToCallback: true
 }, async (info, token, done) => {
   try {
-    // const isAllowed = info.allowedRoles.indexOf(token.user.role) > -1;
-
-    // if(!isAllowed) {
-    //   return done(null, false);
-    // }
 
     return done(null, token.user)
   } catch (error) {
