@@ -25,11 +25,17 @@ export default class Login extends React.Component {
       [event.target.name]: event.target.value
     });
   }
+
   validateForm() {
     return this.email.length > 0 && this.password.length > 0;
   }
+
   handleSubmit(event) {
-    const {email, password } =  this.state
+    const headers = {
+      'Content-Type': 'x-www-form-urlencoded',
+      'Authorization': 'Bearer'
+    };
+    const { email, password } =  this.state;
 
     axios
       .post(
@@ -43,31 +49,16 @@ export default class Login extends React.Component {
         { withCredentials: true }
       )
       .then(response => {
-        if (response.data.status == 'created'){
+        if (response.data.logged) {
           this.props.handleSuccessfulAuth(response.data);
         }
       })
       .catch(error => {
-        console.log('registration error', error);
+        console.log('login error', error);
       });
     event.preventDefault();
-
   }
 
-
-
-
-    const headers = {
-      'Content-Type': 'x-www-form-urlencoded',
-      'Authorization': 'Bearer'
-    };
-
-    axios.post('./api/auth/login', { user }, { headers })
-    .then(res => {
-      console.log(res);
-      console.log(res.data);
-    })
-  }
   render (){
     return (
       <div className="Login">
@@ -76,26 +67,27 @@ export default class Login extends React.Component {
           <Form.Label>Email</Form.Label>
           <Form.Control
             autoFocus
+            name="email"
             type="email"
-            value={this.email}
+            value={this.state.email}
             onChange={this.handleChange}
           />
         </Form.Group>
         <Form.Group size="lg" controlId="password">
           <Form.Label>Password</Form.Label>
           <Form.Control
+            name="password"
             type="password"
-            value={this.password}
+            value={this.state.password}
             onChange={this.handleChange}
           />
         </Form.Group>
-        <Button block size="lg" type="submit" >
-          Login
-        </Button>
+        <Button block size="lg" type="submit" >Login</Button>
       </Form>
       </div>
     )
     }
+}
 /*
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -135,5 +127,6 @@ export default function Login() {
         </Form>
       </div>
     );
+    }
     */
-}
+
