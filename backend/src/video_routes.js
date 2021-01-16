@@ -91,6 +91,14 @@ router.post('/analyse', async (req, res, next) => {
         };
 
         // Execute request
+        let prevLabels = await client.query('SELECT labeljson FROM labels WHERE email=$1;', [user.email]);
+        let labelTo1 = {};
+        if(prevLabels.rowCount == 0) {
+            await client.query('INSERT INTO labels (email, labeljson) VALUES($1, $2);', [user.email, '{}'])
+        } else {
+            labelTo1 = prevLabels.rows[0].labeljson;
+        }
+        
         await client.query('UPDATE videos SET analysed=2 WHERE email=$1;', [user.email]);
         videoclient.annotateVideo(request).then((operation) => {
             return operation[0].promise();
@@ -128,10 +136,15 @@ router.post('/analyse', async (req, res, next) => {
                             e: segment.endTimeOffset.seconds + (segment.endTimeOffset.nanos / 1e9)});
                 });
                 jsonData[label.entity.description] = arr;
+                labelTo1[label.entity.description] = 1;
             });
-            return client.query('UPDATE videos SET analysed=$1, jsondata=$2 WHERE email=$3;', [1, JSON.stringify(jsonData), user.email])
+            
+            return client.query('UPDATE videos SET analysed=1, jsondata=$1 WHERE email=$2;', [JSON.stringify(jsonData), user.email]);
+        }).then(() => {
+            return client.query('UPDATE labels SET labeljson=$2 WHERE email=$1;', [user.email, JSON.stringify(labelTo1)]);
         })
-        .catch(() => {
+        .catch((e) => {
+            console.log(e);
             return client.query('UPDATE videos SET analysed=3 WHERE email=$1;', [user.email]);
         }).then(() => {});
         return res.json({message: "processing"});
@@ -152,7 +165,9 @@ router.post('/query', async (req, res, next) => {
 
         const operator = req.body.operator; // 'and' or 'or'
         const trueLabels = req.body.yes_labels; // (1 and/or 2 and/or 3)
-        const notLabels = req.body.no_labels; // (not 1 and/or not 2 and/or not 3)
+        // const notLabels = req.body.no_labels; // (not 1 and/or not 2 and/or not 3)
+
+
 
         // make a generic function to test for the above;
         // retrieve json data and do magic
@@ -183,6 +198,21 @@ router.get('/blobs', async (req, res, next) => {
         return res.json(videoRows.rows)
         // make a generic function to test for the above;
         // retrieve json data and do magic
+    })(req, res, next)
+})
+
+router.get('/labels', async (req, res, next) => {
+    // req.allowedRoles = ['admin', 'owner', 'manager', 'tenant'];
+    passport.authenticate('jwt', { session: false }, async (error, user) => {
+        if (error || !user) {
+            return !user ? res.status(403).json({ message: 'User does not have enough permissions' }) : error
+        }
+
+        const videoRows = await client.query('SELECT labeljson FROM labels WHERE email = $1', [user.email]);
+        if(videoRows.rowCount == 0) {
+            return res.json([]);
+        }
+        return res.json(Object.keys(videoRows.rows[0].labeljson));
     })(req, res, next)
 })
 
