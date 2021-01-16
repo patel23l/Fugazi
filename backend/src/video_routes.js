@@ -160,4 +160,30 @@ router.post('/query', async (req, res, next) => {
     })(req, res, next)
 })
 
+router.post('/rename', async (req, res, next) => {
+    // req.allowedRoles = ['admin', 'owner', 'manager', 'tenant'];
+    passport.authenticate('jwt', { session: false }, async (error, user) => {
+        if (error || !user) {
+            return !user ? res.status(403).json({ message: 'User does not have enough permissions' }) : error
+        }
+
+        await client.query('UPDATE videos SET name=$1 WHERE email=$2 AND blobname=$3', [req.body.name, user.email, req.body.blobname]);
+        return res.json({message: "succesfully renamed"});
+    })(req, res, next)
+})
+
+router.get('/blobs', async (req, res, next) => {
+    // req.allowedRoles = ['admin', 'owner', 'manager', 'tenant'];
+    passport.authenticate('jwt', { session: false }, async (error, user) => {
+        if (error || !user) {
+            return !user ? res.status(403).json({ message: 'User does not have enough permissions' }) : error
+        }
+
+        const videoRows = await client.query('SELECT blobname, uploadname, url, analysed FROM videos WHERE email = $1', [user.email]);
+        return res.json(videoRows.rows)
+        // make a generic function to test for the above;
+        // retrieve json data and do magic
+    })(req, res, next)
+})
+
 module.exports = router
