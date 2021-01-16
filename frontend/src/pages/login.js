@@ -7,10 +7,15 @@ import Button from "react-bootstrap/Button";
 import axios from 'axios';
 
 export default class Login extends React.Component {
-  state = {
-    email: '',
-    password: ''
-  }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: '',
+      password: '',
+      loginErrors: ''
+    };
+
   validateForm() {
     return this.email.length > 0 && this.password.length > 0;
   }
