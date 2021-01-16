@@ -1,10 +1,21 @@
-import logo from './logo.svg';
+import logo from './fugazi_logo.png';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <navbar>TEST</navbar>
+        <div>
+        <section id="login" class="login">
+          <div>
+            <div>
+              <header>LOGIN</header>
+            <form></form>
+            </div>
+          </div>
+        </section>
+        </div>
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
