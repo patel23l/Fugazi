@@ -1,5 +1,6 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {Component} from 'react';
-import logo from './fugazi_logo.png';
+import logo from './pages/fugazi_logo.png';
 import './App.css';
 import { BrowserRouter, Router, Route, Link, Switch } from "react-router-dom";
 
@@ -14,7 +15,7 @@ class App extends Component {
     return(
       <BrowserRouter>
       <div>
-        <Navigation />
+        <Navigation/>
           <Switch>
            <Route path="/" component={Login} exact/>
            <Route path="/dashboard" component={Dashboard}/>
