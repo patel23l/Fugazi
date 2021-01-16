@@ -16,22 +16,46 @@ export default class Login extends React.Component {
       loginErrors: ''
     };
 
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
   validateForm() {
     return this.email.length > 0 && this.password.length > 0;
   }
+  handleSubmit(event) {
+    const {email, password } =  this.state
 
-  handleChange = event => {
-    this.setState({email: event.target.value});
-    this.setState({password: event.target.value});
+    axios
+      .post(
+        'http://localhost:3000/backend/api/auth/login',
+        {
+          user: {
+            email: email,
+            password: password,
+          }
+        },
+        { withCredentials: true }
+      )
+      .then(response => {
+        if (response.data.status == 'created'){
+          this.props.handleSuccessfulAuth(response.data);
+        }
+      })
+      .catch(error => {
+        console.log('registration error', error);
+      });
+    event.preventDefault();
+
   }
 
-  handleSubmit = event => {
-    event.preventDefault();
-  
-    const user = {
-      email: this.state.email,
-      password: this.state.password
-    };
+
+
 
     const headers = {
       'Content-Type': 'x-www-form-urlencoded',
