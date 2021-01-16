@@ -5,6 +5,31 @@ import Navbar from "react-bootstrap/Navbar";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 
+//HTTP module
+import axios from 'axios';
+
+export default class Login extends React.Component {
+  state = {
+    email: '',
+    password: ''
+  }
+
+  handleChange = event => {
+    this.setState({email: event.target.value});
+    this.setState({password: event.target.value});
+  }
+
+  handleSubmit = event => {
+    event.preventDefault();
+  
+    const user = {
+      email: this.state.email,
+      password: this.state.password
+  };
+
+  axios.post()
+}
+
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
