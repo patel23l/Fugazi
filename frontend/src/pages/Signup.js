@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button"
 import axios from "axios";
+import {BACKEND_URL} from '../constants';
+console.log(BACKEND_URL);
 
 export default class Signup extends Component {
     constructor(props) {
@@ -28,15 +30,15 @@ export default class Signup extends Component {
         const { email, password, password_confirm} = this.state;
 
         axios.post(
-            'http://localhost:3000/api/auth/signup',
+            `${BACKEND_URL}/api/auth/signup`,
             {
-                user: {
-                    email: email,
-                    password: password,
-                    password_confirm: password_confirm
-                }
+              email: email,
+              password: password,
+              password_confirm: password_confirm
             },
-            { withCredentials: true }
+            { headers: {
+              'Content-Type': 'application/json'
+            } }
         )
         .then(response => {
             if(response.data.status === 'created'){

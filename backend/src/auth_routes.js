@@ -26,10 +26,10 @@ router.post('/signup', async (req, res, next) => {
 })
 
 router.post('/login', async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   passport.authenticate('login', async (err, user, info) => {
     if (err || !user) {
-      console.log(info.code, err, user);
+      // console.log(info.code, err, user);
       if (info.code !== 500) { return res.status(info.code).json(info) } else { return next(err) }
     }
 

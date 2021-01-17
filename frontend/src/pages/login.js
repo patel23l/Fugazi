@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import loginImg from "./lock.svg";
 import './style.css';
 import Cookies from "js-cookie";
+import {BACKEND_URL} from '../constants';
 
 //HTTP module
 import axios from 'axios';
@@ -43,7 +44,7 @@ export default class Login extends React.Component {
 
     axios
       .post(
-        'http://localhost:3000/api/auth/login',
+        `${BACKEND_URL}/api/auth/login`,
         {
           user: {
             email: email,
