@@ -36,7 +36,7 @@ export default class Login extends React.Component {
   handleSubmit(event) {
     const access_token_var = Cookies.get('access_token');
     const headers = {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
       'Authorization': 'Bearer ${access_token_var}' 
     };
     const { email, password } =  this.state;
