@@ -21,16 +21,18 @@ const Navigation = props => {
         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
             <ul>
-            <li><a href="/">Home</a></li>
             <li><a href="/login">Login</a></li>
-            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/signup">Register</a></li>
             <li ><a href="/upload">Upload</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
             </ul>
+            <ul align="right" text-align='right' >Status: {props.loggedInStatus}</ul>
             </Nav>
         </Navbar.Collapse>
         </Navbar>
+
         </div>
-        <div><ul text-align='right' >Status: {props.loggedInStatus}</ul> </div>
+        
       </Container>
 
     );
