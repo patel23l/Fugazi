@@ -5,7 +5,7 @@ import './dash.css'
 
 function Dashboard() {
 
-  const[searchTerm, setSearchTerm] = useState('')
+  const[searchTerm, setSearchTerm] = useState('');
 
   return (
     <div className="dash"> 
