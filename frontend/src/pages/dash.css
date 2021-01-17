@@ -17,23 +17,24 @@
 }
 
 p {
-    margin: 10px;
-}
+    margin: 20px;
+} 
 
 /* nav bar */
 .nav-bar ul {
-    list-style-type: none;
+list-style-type: none;
   margin-bottom: 40px;
   padding-top: 20px;
   padding-bottom: 20px;
   overflow: hidden;
-  background-color:#bbc8ba;
+  background-color: #a08d0f;
+  border-radius: 15px;
 }
 
 .nav-bar li {
     float: right;
     padding-right: 20px;
-    color:white;   
+    color:white;  
   }
 
 .nav li a {
@@ -42,4 +43,4 @@ p {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-  }
+}
