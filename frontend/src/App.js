@@ -3,12 +3,12 @@ import React, {Component} from 'react';
 import './App.css';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import Upload from "./pages/Upload";
-import Navigation from "./pages/Navigation"
+import Login from "./pages/login";
+import Dashboard from "./pages/dashboard";
+import Upload from "./pages/upload";
+import Navigation from "./pages/navigation"
 import axios from 'axios';
-import Signup from './pages/Signup';
+import Signup from './pages/signup';
 
 
 class App extends Component {
