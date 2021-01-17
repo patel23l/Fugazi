@@ -36,10 +36,10 @@ export default class Login extends React.Component {
   }
 
   handleSubmit(event) {
-    const access_token_var = Cookies.get('access_token');
+    // const access_token_var = Cookies.get('access_token');
     const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${access_token_var}' 
+      'Content-Type': 'application/json'
+      // 'Authorization': 'Bearer ${access_token_var}' 
     };
     const { email, password } =  this.state;
 
@@ -47,10 +47,8 @@ export default class Login extends React.Component {
       .post(
         `${BACKEND_URL}/api/auth/login`,
         {
-          user: {
             email: email,
             password: password,
-          }
         },
         { headers: headers },
         { withCredentials: true }
@@ -66,10 +64,9 @@ export default class Login extends React.Component {
     event.preventDefault();
   }
   handleSignup(event) {
-    const access_token_var = Cookies.get('access_token');
     const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${access_token_var}' 
+      'Content-Type': 'application/json'
+      // 'Authorization': 'Bearer ${access_token_var}' 
     };
     const { name, email, password } =  this.state;
 
@@ -77,11 +74,9 @@ export default class Login extends React.Component {
       .post(
         `${BACKEND_URL}/api/auth/signup`,
         {
-          user: {
             name: name,
             email: email,
             password: password,
-          }
         },
         { headers: headers },
         { withCredentials: true }
