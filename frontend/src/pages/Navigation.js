@@ -6,7 +6,7 @@ import Nav from "react-bootstrap/Nav";
 import logo from './fugazi_logo.png';
 import './dash.css';
  
-const Navigation = props => {
+const navigation = props => {
     return (
         <div className="nav-bar">
         <Navbar bg="light" expand="lg">
@@ -29,4 +29,4 @@ const Navigation = props => {
     );
 }
  
-export default Navigation;
+export default navigation;

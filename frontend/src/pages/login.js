@@ -6,13 +6,16 @@ import './style.css';
 import Cookies from "js-cookie";
 import {BACKEND_URL} from '../constants';
 
+
 //HTTP module
 import axios from 'axios';
+import { useHistory } from "react-router-dom";
 
 
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
+
 
     this.state = {
       name: '',
@@ -20,6 +23,7 @@ export default class Login extends React.Component {
       password: '',
       loginErrors: ''
     };
+
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
