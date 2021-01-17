@@ -87,7 +87,8 @@ router.post('/analyse', async (req, res, next) => {
         // const gcsUri = 'gs://cloud-samples-data/video/cat.mp4';
         const request = {
             inputUri: `gs://${bucket.name}/${videoRow.blobname}`,
-            features: ['LABEL_DETECTION'],
+            features: ['OBJECT_TRACKING'],
+            location_id: 'us_east1'
         };
 
         // Execute request
@@ -145,7 +146,7 @@ router.post('/analyse', async (req, res, next) => {
                     // console.log(` right  :${box.right}`);
                     // console.log(` bottom :${box.bottom}`);
                     arr.push({
-                        offset: segment.startTimeOffset.seconds + (segment.startTimeOffset.nanos / 1e9) + (timeOffset.seconds || 0) + (timeOffset.nanos / 1e9),
+                        offset: (timeOffset.seconds || 0) + (timeOffset.nanos / 1e9),
                         left: box.left,
                         top: box.top,
                         right: box.right,
@@ -209,7 +210,7 @@ router.get('/blobs', async (req, res, next) => {
             return !user ? res.status(403).json({ message: 'User does not have enough permissions' }) : error
         }
 
-        const videoRows = await client.query('SELECT blobname, uploadname, url, analysed FROM videos WHERE email = $1', [user.email]);
+        const videoRows = await client.query('SELECT blobname, uploadname, url, analysed, jsondata FROM videos WHERE email = $1', [user.email]);
         return res.json(videoRows.rows)
         // make a generic function to test for the above;
         // retrieve json data and do magic

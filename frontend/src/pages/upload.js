@@ -78,13 +78,9 @@ export default class Upload extends Component {
       };
       data.append("name", "Something cool");
       axios.post(`${BACKEND_URL}/api/video/upload`, data, {
-         onUploadProgress: ProgressEvent => {
-            this.setState({
-            loaded: (ProgressEvent.loaded / ProgressEvent.total*100),
-            })
-         },
          headers: {
-            'Authorization': `Bearer ${Cookies.get("access_token")}`
+            'Authorization': `Bearer ${Cookies.get("access_token")}`,
+            'Content-Type': "multipart/form-data"
          }
       })
       .then(res => { // then print response status

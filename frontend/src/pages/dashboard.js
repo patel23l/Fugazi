@@ -34,30 +34,31 @@ export default class Dashboard extends Component {
         this.state = {
           labels: [{name: "NONE", value: "NONE"}],
           rowData: [],
-          show: false
+          show: false,
+          label: "NONE"
         }
-        console.log("Cookie: ", Cookies.get("access_token"));
-        axios.get(`${BACKEND_URL}/api/video/labels`, {
-           headers: {
-              Authorization: `Bearer ${Cookies.get("access_token")}`
-           }
-        })
-        .then(res => { // then print response status
-          //  toast.success('upload success')
-          this.state.labels = [{name: "NONE", value: "NONE"}]
-          // console.log(res.data);
-          this.state.labels.push(...res.data.map((v) => {
-            return {
-              name: v,
-              value: v
-            }
-          }));
-          console.log(this.state.labels);
-        })
-        .catch(err => { // then print response status
-          console.log(err);
-           toast.error('loading labels fail')
-        });
+        // console.log("Cookie: ", Cookies.get("access_token"));
+        // axios.get(`${BACKEND_URL}/api/video/labels`, {
+        //    headers: {
+        //       Authorization: `Bearer ${Cookies.get("access_token")}`
+        //    }
+        // })
+        // .then(res => { // then print response status
+        //   //  toast.success('upload success')
+        //   this.state.labels = [{name: "NONE", value: "NONE"}]
+        //   // console.log(res.data);
+        //   this.state.labels.push(...res.data.map((v) => {
+        //     return {
+        //       name: v,
+        //       value: v
+        //     }
+        //   }));
+        //   console.log(this.state.labels);
+        // })
+        // .catch(err => { // then print response status
+        //   console.log(err);
+        //    toast.error('loading labels fail')
+        // });
         this.searchQuery = this.searchQuery.bind(this);
    }
     onGridReady = (params) => {
@@ -85,6 +86,7 @@ export default class Dashboard extends Component {
    searchQuery = (event) => {
       console.log(event);
       console.log(Cookies.get("access_token"))
+      const that = this;
       if(event === "NONE") {
         axios.get(`${BACKEND_URL}/api/video/blobs`, {
            headers: {
@@ -94,25 +96,12 @@ export default class Dashboard extends Component {
         .then(res => { // then print response status
           //  toast.success('upload success')
           console.log(res.data);
+          const labelssss = ["Not started", "Analysed", "Processing", "Failed"];
           res.data.forEach(vid => {
             // blobname, uploadname, url, analysed
-            let analysedStr = "";
-            switch (vid.analysed) {
-              case 0:
-                analysedStr = "Not start"
-                break;
-              case 1:
-                analysedStr = "Analysed!"
-                break;
-              case 2:
-                analysedStr = "Processing!"
-                break;
-              case 3:
-                analysedStr = "Failed :("
-                break;
-              default:
-                break;
-            }
+            let analysedStr = labelssss[vid.analysed];
+            console.log(vid.jsondata);
+            
             this.state.rowData.push({
               Name: vid.uploadname,
               ObjectID: "-",
@@ -122,7 +111,7 @@ export default class Dashboard extends Component {
               StartTime: 0
             })
           });
-          this.gridApi.refreshCells()
+          that.gridApi.setRowData(this.state.rowData)
         })
         .catch(err => { // then print response status
            toast.error('Query failed')
@@ -152,7 +141,7 @@ export default class Dashboard extends Component {
             })
             // blobname, uploadname, url, analysed
           });
-          this.gridApi.refreshCells()
+          that.gridApi.setRowData(this.state.rowData)
         })
         .catch(err => { // then print response status
            toast.error('Query fail')
