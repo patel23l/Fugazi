@@ -44,7 +44,7 @@ router.post('/login', async (req, res, next) => {
         // TODO(vidursatija): Change secret
         const token = jwt.sign({ user: body }, Buffer.from(process.env.JWT_AUTH_KEY, 'base64'))
         body.profilePicture = user.profilePicture
-        return res.cookie('access_token', token, { expires: new Date(Date.now() + 3600 * 1000 * 24), httpOnly: true, secure: false }).json({ userData: body })
+        return res.cookie('access_token', token, { expires: new Date(Date.now() + 3600 * 1000 * 24), httpOnly: true, secure: false }).json({ access_token: token })
       })
     } catch (error) {
       return next(error)
