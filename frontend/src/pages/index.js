@@ -1,21 +1,10 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const home=()=>{
     return(
     <div className="App">
       <header className="App-header">
-        <navbar>TEST</navbar>
-        <div>
-        <section id="login" class="login">
-          <div>
-            <div>
-              <header>LOGIN</header>
-            <form></form>
-            </div>
-          </div>
-        </section>
-        </div>
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>

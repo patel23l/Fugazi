@@ -26,8 +26,10 @@ router.post('/signup', async (req, res, next) => {
 })
 
 router.post('/login', async (req, res, next) => {
+  console.log(req.body);
   passport.authenticate('login', async (err, user, info) => {
     if (err || !user) {
+      console.log(info.code, err, user);
       if (info.code !== 500) { return res.status(info.code).json(info) } else { return next(err) }
     }
 
@@ -35,10 +37,8 @@ router.post('/login', async (req, res, next) => {
       req.login(user, { session: false }, async (error) => {
         if (error) return next(error)
         const body = {
-          _id: user._id,
           email: user.email,
-          displayName: user.name,
-          role: user.role
+          displayName: user.name
         }
 
         // TODO(vidursatija): Change secret

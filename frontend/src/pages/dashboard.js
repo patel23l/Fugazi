@@ -3,14 +3,13 @@ import JSONDATA from './MOCK_DATA.json';
 import {useState} from 'react';
 import './dash.css'
 
-export default function Dashboard() {
+function Dashboard() {
 
   const[searchTerm, setSearchTerm] = useState('')
 
   return (
-    <div>
     <div className="dash"> 
-    <input type="text" placeholder="Search..."  
+      <input type="text" placeholder="Search..."  
       onChange={event => {
         setSearchTerm(event.target.value)}}></input>
       {JSONDATA.filter((val) => {
@@ -25,6 +24,7 @@ export default function Dashboard() {
           </div>
       })}
     </div>
-    </div>
   );
 }
+
+export default Dashboard;
