@@ -152,12 +152,14 @@ router.post('/analyse', async (req, res, next) => {
                         bottom: box.bottom
                     })
                 })
-
-                jsonData[obj.entity.description] = {
+                if(obj.entity.description in jsonData == false) {
+                    jsonData[obj.entity.description] = [];
+                }
+                jsonData[obj.entity.description].push({
                     s: segment.startTimeOffset.seconds + (segment.startTimeOffset.nanos / 1e9),
                     e: segment.endTimeOffset.seconds + (segment.endTimeOffset.nanos / 1e9),
                     frames: arr
-                };
+                });
                 labelTo1[obj.entity.description] = 1;
             });
             
