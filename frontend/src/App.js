@@ -47,7 +47,6 @@ class App extends Component {
            <Route path="/upload" component={Upload}/>
            <Route component={Error}/>
          </Switch>
-         <h1>HOME</h1>
       </div> 
     </BrowserRouter>
     );
