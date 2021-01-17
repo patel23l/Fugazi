@@ -122,7 +122,7 @@ export default class Login extends React.Component {
 
       handleSubmit(event) {
         const headers = {
-          'Content-Type': 'x-www-form-urlencoded'
+          'Content-Type': 'application/json'
         };
         const { email, password } =  this.state;
     
