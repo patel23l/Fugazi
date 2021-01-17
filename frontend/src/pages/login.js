@@ -40,10 +40,8 @@ export default class Login extends React.Component {
   }
 
   handleSubmit(event) {
-    const access_token_var = Cookies.get('access_token');
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${access_token_var}' 
     };
     const { email, password } =  this.state;
 
@@ -51,18 +49,16 @@ export default class Login extends React.Component {
       .post(
         `${BACKEND_URL}/api/auth/login`,
         {
-          user: {
             email: email,
-            password: password,
-          }
+            password: password
         },
         { headers: headers },
         { withCredentials: true }
       )
       .then(response => {
-        if (response.data.logged) {
-          this.props.handleSuccessfulAuth(response.data);
-        }
+        Cookies.set("access_token", response.data.access_token);
+        console.log(Cookies.get("access_token"));
+        this.props.history.push('/dashboard');
       })
       .catch(error => {
         console.log('login error', error);
@@ -70,10 +66,8 @@ export default class Login extends React.Component {
     event.preventDefault();
   }
   handleSignup(event) {
-    const access_token_var = Cookies.get('access_token');
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${access_token_var}' 
     };
     const { name, email, password } =  this.state;
 
@@ -81,18 +75,18 @@ export default class Login extends React.Component {
       .post(
         `${BACKEND_URL}/api/auth/signup`,
         {
-          user: {
             name: name,
             email: email,
             password: password,
-          }
         },
         { headers: headers },
         { withCredentials: true }
       )
       .then(response => {
         if (response.data.logged) {
-          this.props.handleSuccessfulAuth(response.data);
+          console.log(Cookies.get("access_token"));
+          this.props.history.push('/dashboard');
+          // this.props.handleSuccessfulAuth(response.data);
         }
       })
       .catch(error => {
