@@ -35,10 +35,9 @@ export default class Login extends React.Component {
   }
 
   handleSubmit(event) {
-    const access_token_var = Cookies.get('access_token');
+    // const access_token_var = Cookies.get('access_token');
     const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${access_token_var}' 
+      'Content-Type': 'application/json'
     };
     const { email, password } =  this.state;
 
@@ -51,8 +50,7 @@ export default class Login extends React.Component {
             password: password,
           }
         },
-        { headers: headers },
-        { withCredentials: true }
+        { headers: headers }
       )
       .then(response => {
         if (response.data.logged) {
