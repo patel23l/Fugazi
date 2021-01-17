@@ -56,9 +56,7 @@ export default class Login extends React.Component {
         { withCredentials: true }
       )
       .then(response => {
-        if (response.data.logged) {
-          this.props.handleSuccessfulAuth(response.data);
-        }
+        this.props.handleSuccessfulAuth(response.data);
       })
       .catch(error => {
         console.log('login error', error);
