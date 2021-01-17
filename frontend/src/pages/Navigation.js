@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Navbar from "react-bootstrap/Navbar" ;
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -8,7 +9,8 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container"
 
 import logo from './fugazi_logo.png';
-
+import './dash.css';
+ 
 const Navigation = props => {
     return (
        <Container>
@@ -35,8 +37,16 @@ const Navigation = props => {
             <h2 text-align='right' >Status: {props.loggedInStatus}</h2> 
         </Navbar.Collapse>
         </Navbar>`
-
+        <div className = "nav-bar">
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li ><a href="/uontact">Upload</a></li>
+         </ul>
+       </div>
       </Container>
+
     );
 }
  
