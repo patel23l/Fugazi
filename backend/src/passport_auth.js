@@ -36,6 +36,7 @@ passport.use('login', new LocalStrategy({
   passwordField: 'password'
 }, async (email, password, done) => {
   try {
+    console.log(email, password);
     let userRow = await client.query("SELECT * FROM userSchema WHERE email=$1::text;", [email]);
     console.log(userRow.rows);
     if (userRow.rowCount == 0) {
