@@ -36,10 +36,10 @@ export default class Login extends React.Component {
   }
 
   handleSubmit(event) {
-    // const access_token_var = Cookies.get('access_token');
+    const access_token_var = Cookies.get('access_token');
     const headers = {
-      'Content-Type': 'application/json'
-      // 'Authorization': 'Bearer ${access_token_var}' 
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${access_token_var}' 
     };
     const { email, password } =  this.state;
 
@@ -47,8 +47,10 @@ export default class Login extends React.Component {
       .post(
         `${BACKEND_URL}/api/auth/login`,
         {
+          user: {
             email: email,
             password: password,
+          }
         },
         { headers: headers },
         { withCredentials: true }
@@ -64,9 +66,10 @@ export default class Login extends React.Component {
     event.preventDefault();
   }
   handleSignup(event) {
+    const access_token_var = Cookies.get('access_token');
     const headers = {
-      'Content-Type': 'application/json'
-      // 'Authorization': 'Bearer ${access_token_var}' 
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${access_token_var}' 
     };
     const { name, email, password } =  this.state;
 
@@ -74,9 +77,11 @@ export default class Login extends React.Component {
       .post(
         `${BACKEND_URL}/api/auth/signup`,
         {
+          user: {
             name: name,
             email: email,
             password: password,
+          }
         },
         { headers: headers },
         { withCredentials: true }
@@ -110,35 +115,6 @@ export default class Login extends React.Component {
   }
 
   render (){
-/*
-    return (
-      <div class="form-container sign-up-container" id="container">
-      <form onSubmit={this.handleSubmit}>
-      <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={this.state.email}
-            onChange={this.handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={this.state.password}
-            onChange={this.handleChange}
-            required
-          />
-
-          <button type="submit">Login</button>
-        </form>
-      </div>
-    );
-  }
-}
-*/
- 
       return (
         <div class="container" id="container">
     <div class="form-container sign-up-container">
@@ -213,58 +189,4 @@ export default class Login extends React.Component {
       );
       }
     }
-      /*
-      export default function Login() {
-        const signUpButton = document.getElementById('signUp');
-        const signInButton = document.getElementById('signIn');
-        const container = document.getElementById('container');
-    
-        if(signUpButton){
-          signUpButton.addEventListener('click', () => {
-            container.classList.add('right-panel-active');
-          });
-        }
-    
-        if(signInButton){
-          signInButton.addEventListener('click', () => {
-            container.classList.remove('right-panel-active');
-          });
-        }
-  
-      return (
-        <div class="container" id="container">
-    <div class="form-container sign-up-container">
-      <form action="#">
-        <h1>Create Account</h1>
-        <input type="text" placeholder="Name" />
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
-        <button>Sign Up</button>
-      </form>
-    </div>
-    <div class="form-container sign-in-container">
-      <form action="#">
-        <h1>Sign in</h1>
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
-        <a href="#">Forgot your password?</a>
-        <button>Sign In</button>
-      </form>
-    </div>
-    <div class="overlay-container">
-      <div class="overlay">
-        <div class="overlay-panel overlay-left">
-          <h1>Welcome Back!</h1>
-          <p>Sign in to start your video analysis!</p>
-          <button class="ghost" id="signIn">Sign In</button>
-        </div>
-        <div class="overlay-panel overlay-right">
-          <h1>Join Us</h1>
-          <p>Sign up to join the big brother surveillance team.  George Orwell welcomes you.</p>
-          <button class="ghost" id="signUp">Sign Up</button>
-        </div>
-      </div>
-    </div>
-  </div>
-      );
-      */
+ 

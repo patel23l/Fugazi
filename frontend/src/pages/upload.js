@@ -3,6 +3,7 @@ import axios from "axios";
 import {ProgressBar} from "react-bootstrap";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './upload.css'
 
 export default class Upload extends Component {
    constructor(props) {
@@ -72,7 +73,7 @@ export default class Upload extends Component {
       for(var x = 0; x<this.state.selectedFile.length; x++) {
          data.append('file', this.state.selectedFile[x])
       };
-      axios.post("http://localhost:8000/upload", data, {
+      axios.post("http://localhost:3000/api/video/upload", data, {
          onUploadProgress: ProgressEvent => {
             this.setState({
             loaded: (ProgressEvent.loaded / ProgressEvent.total*100),
