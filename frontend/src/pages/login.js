@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import loginImg from "./lock.svg";
 import './style.css';
+import Navigation from "./Navigation"
+import {login} from '../backend/src/passport_auth_1';
+
 
 export default function Login() {
     /*
@@ -12,7 +16,7 @@ export default function Login() {
     const [password, setPassword] = useState("");
 
     function validateForm() {
-        return email.length > 0 && password.length > 0;
+        return email.length > 0&& password.length > 0;
     }
 
     function handleSubmit(event) {
@@ -42,6 +46,17 @@ export default function Login() {
         </Form>
     }*/
 
+    const[email, setEmail] = useState('');
+    const[password, setPassword] = useState('');
+    const userSignin = useSelector(state => userSignin.state);
+
+    const dispatch = useDispatch();
+
+    const submitHandler = (e) => {
+      e.preventDefault();
+      dispatch(login(email, password));
+    }
+
     const signUpButton = document.getElementById('signUp');
     const signInButton = document.getElementById('signIn');
     const container = document.getElementById('container');
@@ -58,14 +73,15 @@ export default function Login() {
       });
     }
 
-
     return (
+      
       <div class="container" id="container">
+        <form onSubmit = {submitHandler}>
 	<div class="form-container sign-up-container">
 		<form action="#">
 			<h1>Create Account</h1>
 			<input type="text" placeholder="Name" />
-			<input type="email" placeholder="Email" />
+			<input type="email" placeholder="Email"/>
 			<input type="password" placeholder="Password" />
 			<button>Sign Up</button>
 		</form>
@@ -73,8 +89,8 @@ export default function Login() {
 	<div class="form-container sign-in-container">
 		<form action="#">
 			<h1>Sign in</h1>
-			<input type="email" placeholder="Email" />
-			<input type="password" placeholder="Password" />
+			<input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)}/>
+			<input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
 			<a href="#">Forgot your password?</a>
 			<button>Sign In</button>
 		</form>
@@ -93,6 +109,7 @@ export default function Login() {
 			</div>
 		</div>
 	</div>
+  </form>
 </div>
     );
 }
