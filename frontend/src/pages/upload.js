@@ -3,13 +3,9 @@ import axios from "axios";
 import {ProgressBar} from "react-bootstrap";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-<<<<<<< HEAD
-import './upload.css'
-||||||| 9b79b7d
-=======
+import './upload.css';
 import Cookies from "js-cookie";
 import {BACKEND_URL} from '../constants';
->>>>>>> eb43bcaeeee043432d1836ad9079ca474bbbeed6
 
 export default class Upload extends Component {
    constructor(props) {
@@ -79,14 +75,8 @@ export default class Upload extends Component {
       for(var x = 0; x<this.state.selectedFile.length; x++) {
          data.append('file', this.state.selectedFile[x])
       };
-<<<<<<< HEAD
-      axios.post("http://localhost:3000/api/video/upload", data, {
-||||||| 9b79b7d
-      axios.post("http://localhost:8000/upload", data, {
-=======
       data.append("name", "Something cool");
       axios.post(`${BACKEND_URL}/api/video/upload`, data, {
->>>>>>> eb43bcaeeee043432d1836ad9079ca474bbbeed6
          onUploadProgress: ProgressEvent => {
             this.setState({
             loaded: (ProgressEvent.loaded / ProgressEvent.total*100),
@@ -102,7 +92,7 @@ export default class Upload extends Component {
       .catch(err => { // then print response status
          toast.error('upload fail')
       });
-   } 
+   }
    render(){
       return(
          <div class="container">
