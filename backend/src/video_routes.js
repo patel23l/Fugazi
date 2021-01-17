@@ -167,7 +167,7 @@ router.post('/query', async (req, res, next) => {
         const trueLabels = req.body.yes_labels; // (1 and/or 2 and/or 3)
         // const notLabels = req.body.no_labels; // (not 1 and/or not 2 and/or not 3)
 
-
+        const videoRows = await client.query('SELECT jsondata-> FROM videos WHERE email = $1 AND analysed=1', [user.email]);
 
         // make a generic function to test for the above;
         // retrieve json data and do magic
