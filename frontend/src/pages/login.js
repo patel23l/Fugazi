@@ -15,6 +15,7 @@ export default class Login extends React.Component {
     super(props);
 
     this.state = {
+      name: '',
       email: '',
       password: '',
       loginErrors: ''
@@ -38,6 +39,7 @@ export default class Login extends React.Component {
     // const access_token_var = Cookies.get('access_token');
     const headers = {
       'Content-Type': 'application/json'
+      // 'Authorization': 'Bearer ${access_token_var}' 
     };
     const { email, password } =  this.state;
 
@@ -45,12 +47,11 @@ export default class Login extends React.Component {
       .post(
         `${BACKEND_URL}/api/auth/login`,
         {
-          user: {
             email: email,
             password: password,
-          }
         },
-        { headers: headers }
+        { headers: headers },
+        { withCredentials: true }
       )
       .then(response => {
         if (response.data.logged) {
@@ -59,6 +60,34 @@ export default class Login extends React.Component {
       })
       .catch(error => {
         console.log('login error', error);
+      });
+    event.preventDefault();
+  }
+  handleSignup(event) {
+    const headers = {
+      'Content-Type': 'application/json'
+      // 'Authorization': 'Bearer ${access_token_var}' 
+    };
+    const { name, email, password } =  this.state;
+
+    axios
+      .post(
+        `${BACKEND_URL}/api/auth/signup`,
+        {
+            name: name,
+            email: email,
+            password: password,
+        },
+        { headers: headers },
+        { withCredentials: true }
+      )
+      .then(response => {
+        if (response.data.logged) {
+          this.props.handleSuccessfulAuth(response.data);
+        }
+      })
+      .catch(error => {
+        console.log('signup error', error);
       });
     event.preventDefault();
   }
@@ -81,69 +110,89 @@ export default class Login extends React.Component {
   }
 
   render (){
-/*    
+/*
     return (
-      
-      <div class="container" id="container">
-      <Form onSubmit={this.handleSubmit}>
-      <div class="form-container sign-up-container">
-        <Form.Group size="lg" controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            autoFocus
-            name="email"
+      <div class="form-container sign-up-container" id="container">
+      <form onSubmit={this.handleSubmit}>
+      <input
             type="email"
+            name="email"
+            placeholder="Email"
             value={this.state.email}
             onChange={this.handleChange}
+            required
           />
-        </Form.Group>
-        </div>
-        <div class="form-container sign-up-container">
-        <Form.Group size="lg" controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            name="password"
+          <input
             type="password"
+            name="password"
+            placeholder="Password"
             value={this.state.password}
             onChange={this.handleChange}
+            required
           />
-        </Form.Group>
-        </div>
-        <Button block size="lg" type="submit" >Login</Button>
-      </Form>
+
+          <button type="submit">Login</button>
+        </form>
       </div>
-    )
-    }
+    );
+  }
 }
 */
  
       return (
         <div class="container" id="container">
     <div class="form-container sign-up-container">
-      <form 
-        autoFocus
-        name="email"
-        type="email"
-        value={this.state.email}
-        onChange={this.handleChange}>
+      <form onSubmit={this.handleSignup}>
         <h1>Create Account</h1>
         <input type="text" placeholder="Name" />
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
+        <input 
+          type="name"
+          name="name"
+          placeholder="Name"
+          value={this.state.name}
+          onChange={this.handleChange}
+          required
+        />
+        <input 
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={this.state.email}
+          onChange={this.handleChange}
+          required
+        />
+        <input 
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={this.state.password}
+          onChange={this.handleChange}
+          required
+        />
         <button>Sign Up</button>
       </form>
     </div>
     <div class="form-container sign-in-container">
-      <form             
-        name="password"
-        type="password"
-        value={this.state.password}
-        onChange={this.handleChange}>
+      <form  onSubmit={this.handleSubmit}>
         <h1>Sign in</h1>
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
+        <input 
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={this.state.email}
+          onChange={this.handleChange}
+          required
+        />
+        <input 
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={this.state.password}
+          onChange={this.handleChange}
+          required
+        />
         <a href="#">Forgot your password?</a>
-        <button>Sign In</button>
+        <button type="submit">Sign In</button>
       </form>
     </div>
     <div class="overlay-container">
@@ -164,7 +213,6 @@ export default class Login extends React.Component {
       );
       }
     }
-  
       /*
       export default function Login() {
         const signUpButton = document.getElementById('signUp');

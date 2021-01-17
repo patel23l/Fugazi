@@ -10,7 +10,7 @@ const Navigation = props => {
     return (
         <div className="nav-bar">
         <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#home"><a href="/" className="navbar-brand"><img src={logo} alt-text="Fugazi Logo"></img></a></Navbar.Brand>
+        <Navbar.Brand href="/dashboard"><a href="/" className="navbar-brand"><img src={logo} alt-text="Fugazi Logo"></img></a></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
