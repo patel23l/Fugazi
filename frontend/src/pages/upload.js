@@ -3,7 +3,13 @@ import axios from "axios";
 import {ProgressBar} from "react-bootstrap";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+<<<<<<< HEAD
 import './upload.css'
+||||||| 9b79b7d
+=======
+import Cookies from "js-cookie";
+import {BACKEND_URL} from '../constants';
+>>>>>>> eb43bcaeeee043432d1836ad9079ca474bbbeed6
 
 export default class Upload extends Component {
    constructor(props) {
@@ -73,12 +79,22 @@ export default class Upload extends Component {
       for(var x = 0; x<this.state.selectedFile.length; x++) {
          data.append('file', this.state.selectedFile[x])
       };
+<<<<<<< HEAD
       axios.post("http://localhost:3000/api/video/upload", data, {
+||||||| 9b79b7d
+      axios.post("http://localhost:8000/upload", data, {
+=======
+      data.append("name", "Something cool");
+      axios.post(`${BACKEND_URL}/api/video/upload`, data, {
+>>>>>>> eb43bcaeeee043432d1836ad9079ca474bbbeed6
          onUploadProgress: ProgressEvent => {
             this.setState({
             loaded: (ProgressEvent.loaded / ProgressEvent.total*100),
             })
          },
+         headers: {
+            'Authorization': `Bearer ${Cookies.get("access_token")}`
+         }
       })
       .then(res => { // then print response status
          toast.success('upload success')
@@ -94,7 +110,7 @@ export default class Upload extends Component {
                <div class="offset-md-3 col-md-6">
                   <div class="form-group files">
                   <label>Upload Your File </label>
-                  <input type="file" class="form-control" multiple onChange={this.onChangeHandler}/>
+                  <input type="file" class="form-control" onChange={this.onChangeHandler}/>
                   </div>  
                   <div class="form-group">
                   <ToastContainer />

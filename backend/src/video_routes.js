@@ -158,17 +158,20 @@ router.post('/query', async (req, res, next) => {
             return !user ? res.status(403).json({ message: 'User does not have enough permissions' }) : error
         }
 
-        const videoRows = await client.query('SELECT * FROM videos WHERE email = $1 AND analysed=1', [user.email]);
-        if(videoRows.rowCount == 0) {
-            return res.status(405).json({message: "Videos not found"});
-        }
+        console.log(user.email);
+        // const videoRows = await client.query('SELECT * FROM videos WHERE email = $1 AND analysed=1', [user.email]);
+        // if(videoRows.rowCount == 0) {
+        //     return res.status(405).json({message: "Videos not found"});
+        // }
 
-        const operator = req.body.operator; // 'and' or 'or'
-        const trueLabels = req.body.yes_labels; // (1 and/or 2 and/or 3)
+        // const operator = req.body.operator; // 'and' or 'or'
+        const trueLabels = req.body.label; // (1 and/or 2 and/or 3)
+        console.log(trueLabels);
         // const notLabels = req.body.no_labels; // (not 1 and/or not 2 and/or not 3)
 
-        // const videoRows = await client.query('SELECT jsondata-> FROM videos WHERE email = $1 AND analysed=1', [user.email]);
-
+        const videoResults = await client.query("SELECT blobname, jsondata->'"+trueLabels+"' as label FROM videos WHERE email=$1 AND analysed=1", [user.email]);
+        console.log(videoResults.command);
+        return res.json(videoResults.rows);
         // make a generic function to test for the above;
         // retrieve json data and do magic
  
