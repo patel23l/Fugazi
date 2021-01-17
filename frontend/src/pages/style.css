@@ -5,7 +5,6 @@
 }
 
 body {
-<<<<<<< HEAD
   background: #bbc8ba;
   display: flex;
   justify-content: center;
@@ -14,15 +13,6 @@ body {
   font-family: "Montserrat", sans-serif;
   height: 120vh;
   margin: 0px 0 40px;
-=======
-	background: #bbc8ba;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	font-family: 'Montserrat', sans-serif;
-	margin: -20px 0 50px;
->>>>>>> Nandini
 }
 
 h1 {
