@@ -28,7 +28,7 @@ export default class Signup extends Component {
         const { email, password, password_confirm} = this.state;
 
         axios.post(
-            'http://localhost:3000/backend/api/auth/signup',
+            'http://localhost:3000/api/auth/signup',
             {
                 user: {
                     email: email,

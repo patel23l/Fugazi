@@ -3,11 +3,12 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import loginImg from "./lock.svg";
 import './style.css';
+import Cookies from "js-cookie";
 
 //HTTP module
 import axios from 'axios';
 
-/*
+
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -33,21 +34,23 @@ export default class Login extends React.Component {
   }
 
   handleSubmit(event) {
+    const access_token_var = Cookies.get('access_token');
     const headers = {
-      'Content-Type': 'x-www-form-urlencoded',
-      'Authorization': 'Bearer'
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Bearer ${access_token_var}' 
     };
     const { email, password } =  this.state;
 
     axios
       .post(
-        'http://localhost:3000/backend/api/auth/login',
+        'http://localhost:3000/api/auth/login',
         {
           user: {
             email: email,
             password: password,
           }
         },
+        { headers: headers },
         { withCredentials: true }
       )
       .then(response => {
@@ -60,8 +63,26 @@ export default class Login extends React.Component {
       });
     event.preventDefault();
   }
+  btnLogin() {
+    const signUpButton = document.getElementById('signUp');
+    const signInButton = document.getElementById('signIn');
+    const container = document.getElementById('container');
+
+    if(signUpButton){
+      signUpButton.addEventListener('click', () => {
+        container.classList.add('right-panel-active');
+      });
+    }
+
+    if(signInButton){
+      signInButton.addEventListener('click', () => {
+        container.classList.remove('right-panel-active');
+      });
+    }
+  }
 
   render (){
+/*    
     return (
       <div class="container" id="container">
       <Form onSubmit={this.handleSubmit}>
@@ -96,26 +117,15 @@ export default class Login extends React.Component {
 }
 */
  
-    export default function Login() {
-      const signUpButton = document.getElementById('signUp');
-      const signInButton = document.getElementById('signIn');
-      const container = document.getElementById('container');
-  
-      if(signUpButton){
-        signUpButton.addEventListener('click', () => {
-          container.classList.add('right-panel-active');
-        });
-      }
-  
-      if(signInButton){
-        signInButton.addEventListener('click', () => {
-          container.classList.remove('right-panel-active');
-        });
-      }
       return (
         <div class="container" id="container">
     <div class="form-container sign-up-container">
-      <form action="#">
+      <form 
+        autoFocus
+        name="email"
+        type="email"
+        value={this.state.email}
+        onChange={this.handleChange}>
         <h1>Create Account</h1>
         <input type="text" placeholder="Name" />
         <input type="email" placeholder="Email" />
@@ -124,7 +134,11 @@ export default class Login extends React.Component {
       </form>
     </div>
     <div class="form-container sign-in-container">
-      <form action="#">
+      <form             
+        name="password"
+        type="password"
+        value={this.state.password}
+        onChange={this.handleChange}>
         <h1>Sign in</h1>
         <input type="email" placeholder="Email" />
         <input type="password" placeholder="Password" />
@@ -148,10 +162,9 @@ export default class Login extends React.Component {
     </div>
   </div>
       );
+      }
     }
   
-
-
       /*
       export default function Login() {
         const signUpButton = document.getElementById('signUp');
