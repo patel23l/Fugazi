@@ -71,7 +71,8 @@ export default class Upload extends Component {
       }
    }
    onClickHandler = () => {
-      const data = new FormData() 
+      const data = new FormData();
+      console.log(Cookies.get("access_token"))
       for(var x = 0; x<this.state.selectedFile.length; x++) {
          data.append('file', this.state.selectedFile[x])
       };
