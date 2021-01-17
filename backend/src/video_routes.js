@@ -105,38 +105,62 @@ router.post('/analyse', async (req, res, next) => {
         }).then((operationResult) => {
             const annotations = operationResult[0].annotationResults[0];
             // Gets labels for video from its annotations
-            const labels = annotations.segmentLabelAnnotations;
+            const objects = annotations.objectAnnotations;
             let jsonData = {};
-            labels.forEach(label => {
+            objects.forEach(obj => {
                 // console.log(`Label ${label.entity.description} occurs at:`);
+                segment = obj.segment;
+                if (segment.startTimeOffset.seconds === undefined) {
+                    segment.startTimeOffset.seconds = 0;
+                }
+                if (segment.startTimeOffset.nanos === undefined) {
+                    segment.startTimeOffset.nanos = 0;
+                }
+                if (segment.endTimeOffset.seconds === undefined) {
+                    segment.endTimeOffset.seconds = 0;
+                }
+                if (segment.endTimeOffset.nanos === undefined) {
+                    segment.endTimeOffset.nanos = 0;
+                }
+                // console.log(
+                // `\tStart: ${segment.startTimeOffset.seconds}` +
+                //     `.${(segment.startTimeOffset.nanos / 1e6).toFixed(0)}s`
+                // );
+                // console.log(
+                // `\tEnd: ${segment.endTimeOffset.seconds}.` +
+                //     `${(segment.endTimeOffset.nanos / 1e6).toFixed(0)}s`
+                // );
+                // console.log(`Confidence: ${object.confidence}`);
                 let arr = [];
-                label.segments.forEach(segment => {
-                    segment = segment.segment;
-                    if (segment.startTimeOffset.seconds === undefined) {
-                        segment.startTimeOffset.seconds = 0;
-                    }
-                    if (segment.startTimeOffset.nanos === undefined) {
-                        segment.startTimeOffset.nanos = 0;
-                    }
-                    if (segment.endTimeOffset.seconds === undefined) {
-                        segment.endTimeOffset.seconds = 0;
-                    }
-                    if (segment.endTimeOffset.nanos === undefined) {
-                        segment.endTimeOffset.nanos = 0;
-                    }
+                obj.frames.forEach(frame => {
+                    const box = frame.normalizedBoundingBox;
+                    const timeOffset = frame.timeOffset;
                     // console.log(
-                    // `\tStart: ${segment.startTimeOffset.seconds}` +
-                    //     `.${(segment.startTimeOffset.nanos / 1e6).toFixed(0)}s`
+                    //     `Time offset for the first frame: ${timeOffset.seconds || 0}` +
+                    //     `.${(timeOffset.nanos / 1e6).toFixed(0)}s`
                     // );
-                    // console.log(
-                    // `\tEnd: ${segment.endTimeOffset.seconds}.` +
-                    //     `${(segment.endTimeOffset.nanos / 1e6).toFixed(0)}s`
-                    // );
-                    arr.push({s: segment.startTimeOffset.seconds + (segment.startTimeOffset.nanos / 1e9),
-                            e: segment.endTimeOffset.seconds + (segment.endTimeOffset.nanos / 1e9)});
+                    // console.log('Bounding box position:');
+                    // console.log(` left   :${box.left}`);
+                    // console.log(` top    :${box.top}`);
+                    // console.log(` right  :${box.right}`);
+                    // console.log(` bottom :${box.bottom}`);
+                    arr.push({
+                        offset: segment.startTimeOffset.seconds + (segment.startTimeOffset.nanos / 1e9) + (timeOffset.seconds || 0) + (timeOffset.nanos / 1e9),
+                        left: box.left,
+                        top: box.top,
+                        right: box.right,
+                        bottom: box.bottom
+                    })
+                })
+                if(obj.entity.description in jsonData == false) {
+                    jsonData[obj.entity.description] = [];
+                }
+                jsonData[obj.entity.description].push({
+                    s: segment.startTimeOffset.seconds + (segment.startTimeOffset.nanos / 1e9),
+                    e: segment.endTimeOffset.seconds + (segment.endTimeOffset.nanos / 1e9),
+                    frames: arr
                 });
-                jsonData[label.entity.description] = arr;
-                labelTo1[label.entity.description] = 1;
+                labelTo1[obj.entity.description] = 1;
             });
             
             return client.query('UPDATE videos SET analysed=1, jsondata=$1 WHERE email=$2;', [JSON.stringify(jsonData), user.email]);
@@ -169,24 +193,12 @@ router.post('/query', async (req, res, next) => {
         console.log(trueLabels);
         // const notLabels = req.body.no_labels; // (not 1 and/or not 2 and/or not 3)
 
-        const videoResults = await client.query("SELECT blobname, jsondata->'"+trueLabels+"' as label FROM videos WHERE email=$1 AND analysed=1", [user.email]);
+        const videoResults = await client.query("SELECT blobname, uploadname, url, jsondata->'"+trueLabels+"' as label FROM videos WHERE email=$1 AND analysed=1", [user.email]);
         console.log(videoResults.command);
         return res.json(videoResults.rows);
         // make a generic function to test for the above;
         // retrieve json data and do magic
  
-    })(req, res, next)
-})
-
-router.post('/rename', async (req, res, next) => {
-    // req.allowedRoles = ['admin', 'owner', 'manager', 'tenant'];
-    passport.authenticate('jwt', { session: false }, async (error, user) => {
-        if (error || !user) {
-            return !user ? res.status(403).json({ message: 'User does not have enough permissions' }) : error
-        }
-
-        await client.query('UPDATE videos SET name=$1 WHERE email=$2 AND blobname=$3', [req.body.name, user.email, req.body.blobname]);
-        return res.json({message: "succesfully renamed"});
     })(req, res, next)
 })
 

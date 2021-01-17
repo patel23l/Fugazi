@@ -60,9 +60,9 @@ const ExtractJWT = require('passport-jwt').ExtractJwt
 const cookieExtractor = function (req) {
   let token = null
   token = ExtractJWT.fromAuthHeaderAsBearerToken()(req)
-  if (req && req.cookies) {
-    token = req.cookies.access_token
-  }
+  // if (req && req.cookies) {
+  //   token = req.cookies.access_token
+  // }
   return token
 }
 
