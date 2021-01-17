@@ -38,11 +38,12 @@ class App extends Component {
   render() {
     return(
       <BrowserRouter>
+            <Navigation />
       <div>
         <Navigation/>
           <Switch>
            <Route path="/login" component={Login} exact/>
-           <Route path="/singup" component={Signup} exact/>
+           <Route path="/signup" component={Signup} exact/>
            <Route path="/dashboard" component={Dashboard}/>
            <Route path="/upload" component={Upload}/>
            <Route component={Error}/>
