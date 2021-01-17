@@ -9,7 +9,6 @@ import {BACKEND_URL} from '../constants';
 
 //HTTP module
 import axios from 'axios';
-import { useHistory } from "react-router-dom";
 
 
 export default class Login extends React.Component {
@@ -23,7 +22,6 @@ export default class Login extends React.Component {
       password: '',
       loginErrors: ''
     };
-
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -61,6 +59,7 @@ export default class Login extends React.Component {
       )
       .then(response => {
         if (response.data.logged) {
+          this.props.history.push('/dashboard');
           this.props.handleSuccessfulAuth(response.data);
         }
       })
