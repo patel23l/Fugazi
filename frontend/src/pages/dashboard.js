@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from 'react';
  
 const Dashboard = () => {
@@ -11,8 +10,6 @@ const Dashboard = () => {
 }
  
 export default Dashboard;
-||||||| 85b24ad
-=======
 import React from 'react';
 import JSONDATA from './MOCK_DATA.json';
 import {useState} from 'react';
@@ -43,4 +40,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
->>>>>>> Nandini
