@@ -32,7 +32,7 @@ const Navigation = props => {
             <FormControl type="text" placeholder="Search" className="mr-sm-2" />
             <Button variant="outline-success">Search</Button>
             </Form>
-            <h2>Status: {props.loggedInStatus}</h2> 
+            <h2 text-align='right' >Status: {props.loggedInStatus}</h2> 
         </Navbar.Collapse>
         </Navbar>`
 

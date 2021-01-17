@@ -47,10 +47,6 @@ class App extends Component {
            <Route path="/upload" component={Upload}/>
            <Route component={Error}/>
          </Switch>
-         <h1>Fugazi</h1>
-         <h1>Status: {this.props.loggedInStatus}</h1>
-         <Signup handleSuccessfulAuth={this.handleSuccessfulAuth} />
-         <Login handleSuccessfulAuth={this.handleSuccessfulAuth} />
       </div> 
     </BrowserRouter>
     );
