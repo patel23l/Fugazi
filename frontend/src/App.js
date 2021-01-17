@@ -6,9 +6,9 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./pages/login";
 import Dashboard from "./pages/dashboard";
 import Upload from "./pages/upload";
-import Navigation from "./pages/navigation"
+import Navigation from "./pages/Navigation"
 import axios from 'axios';
-import Signup from './pages/signup';
+import Signup from './pages/Signup';
 
 
 class App extends Component {
